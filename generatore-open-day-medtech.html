@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Generatore Open Day Med &amp; Tech</title>
+<style>
+  :root {
+    --accent: #0F766E; --accent-dark: #115E59; --red: #C00000;
+    --dark: #1F2937; --gray: #6B7280; --light: #F3F4F6;
+    --bg: #FAFAF9; --border: #E5E7EB; --ok: #16A34A;
+  }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Calibri, Arial, sans-serif; background: var(--bg); color: var(--dark); margin: 0; line-height: 1.55; }
+  header { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%); color: white; padding: 28px 32px; }
+  header h1 { margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
+  header .sub { margin-top: 6px; font-size: 14px; opacity: 0.85; font-style: italic; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 24px 32px 80px; }
+  .card { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 24px; margin-bottom: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+  .card h2 { margin: 0 0 4px; font-size: 16px; color: var(--accent); font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; }
+  .card .desc { color: var(--gray); font-size: 13px; margin-bottom: 16px; font-style: italic; }
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px 18px; }
+  .field { display: flex; flex-direction: column; }
+  .field.wide { grid-column: 1 / -1; }
+  .field label { font-size: 12px; font-weight: 600; color: var(--dark); margin-bottom: 6px; letter-spacing: 0.02em; text-transform: uppercase; }
+  .field label .opt { font-weight: 500; color: var(--gray); text-transform: none; font-style: italic; letter-spacing: 0; }
+  .field input, .field select { padding: 10px 12px; font-size: 14px; border: 1px solid var(--border); border-radius: 6px; background: white; color: var(--dark); font-family: inherit; transition: border-color 0.15s, box-shadow 0.15s; }
+  .field input:focus, .field select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15); }
+  .field .hint { font-size: 11px; color: var(--gray); margin-top: 4px; }
+  .frontend-card { background: white; border: 2px solid var(--accent); border-radius: 10px; padding: 22px 24px; margin-bottom: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+  .frontend-card h2 { margin: 0 0 4px; font-size: 16px; color: var(--accent); font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; }
+  .frontend-card .desc { color: var(--gray); font-size: 13px; margin: 0 0 16px; font-style: italic; }
+  .frontend-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .frontend-tile { display: block; cursor: pointer; background: white; border: 2px solid var(--border); border-radius: 8px; padding: 18px 22px 16px; transition: all 0.15s; position: relative; user-select: none; }
+  .frontend-tile:hover { border-color: #A7F3D0; }
+  .frontend-tile input[type="radio"] { position: absolute; opacity: 0; pointer-events: none; }
+  .frontend-tile .tile-name { font-size: 18px; font-weight: 700; color: var(--dark); letter-spacing: 0.02em; }
+  .frontend-tile .tile-desc { font-size: 12px; color: var(--gray); font-style: italic; margin-top: 4px; line-height: 1.4; }
+  .frontend-tile.active { border-color: var(--accent); background: #ECFDF5; box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12); }
+  .frontend-tile.active .tile-name { color: var(--accent); }
+  .frontend-tile.active::after { content: "✓"; position: absolute; top: 14px; right: 16px; background: var(--accent); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+  .alert-creatives .fe-pill { display: inline-block; background: var(--accent); color: white; font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 999px; margin-left: 8px; text-transform: uppercase; letter-spacing: 0.05em; vertical-align: middle; }
+  .alert-creatives .fe-pill.sculpt { background: #B45309; }
+  .cc-fixed-info { background: var(--light); border-radius: 6px; padding: 10px 14px; font-size: 12px; color: var(--dark); line-height: 2; }
+  .cc-fixed-info .cc-fixed-label { font-weight: 700; color: var(--accent); margin-right: 8px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .cc-fixed-info code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 11px; color: var(--dark); background: white; padding: 3px 7px; border-radius: 3px; border: 1px solid var(--border); margin-right: 4px; white-space: nowrap; display: inline-block; }
+  .auto-derived { background: var(--light); border-radius: 8px; padding: 12px 16px; margin-top: 16px; font-size: 13px; color: var(--dark); display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px 16px; }
+  .auto-derived strong { color: var(--accent); }
+  .frontend-active-pill { display: inline-block; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; background: var(--accent); color: white; margin-bottom: 16px; }
+  .frontend-active-pill.sculpt { background: #B45309; }
+  .output-grid { display: grid; grid-template-columns: 1fr; gap: 18px; }
+  .out-card { background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+  .out-head { background: var(--accent); color: white; padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; }
+  .out-head.red { background: var(--red); }
+  .out-head.blue { background: #1D4ED8; }
+  .mailto-btn { text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
+  .out-head.blue .mailto-btn { color: #1D4ED8; }
+  .out-head h3 { margin: 0; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+  .out-head .meta { font-size: 12px; opacity: 0.85; font-style: italic; }
+  .out-body { padding: 18px 22px; white-space: pre-wrap; font-family: -apple-system, "Segoe UI", Arial, sans-serif; font-size: 14px; color: var(--dark); line-height: 1.65; max-height: 580px; overflow-y: auto; }
+  .copy-btn { background: white; color: var(--accent); border: 1px solid white; border-radius: 6px; padding: 6px 14px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; text-transform: uppercase; letter-spacing: 0.04em; }
+  .copy-btn:hover { background: rgba(255,255,255,0.85); }
+  .out-head.red .copy-btn { color: var(--red); }
+  .copy-btn.copied { background: var(--ok); color: white; border-color: var(--ok); }
+  .out-head.red .copy-btn.copied { background: var(--ok); color: white; }
+  .empty-state { text-align: center; color: var(--gray); padding: 60px 20px; font-style: italic; }
+  footer { text-align: center; color: var(--gray); font-size: 12px; padding: 20px 0; }
+
+  .alert-setup { background: #FFFBEB; border: 1px solid #FCD34D; border-left: 5px solid #F59E0B; border-radius: 10px; padding: 20px 24px; margin-bottom: 20px; color: #78350F; }
+  .alert-setup h2 { margin: 0 0 6px; font-size: 15px; color: #92400E; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 700; }
+  .alert-setup p { margin: 0 0 14px; font-size: 13px; color: #78350F; }
+  .alert-setup .setup-row { display: flex; justify-content: space-between; align-items: center; background: white; border: 1px solid #FCD34D; border-radius: 6px; padding: 10px 14px; margin-bottom: 8px; gap: 10px; flex-wrap: wrap; }
+  .alert-setup .setup-row .label { font-size: 12px; font-weight: 700; color: #92400E; text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap; }
+  .alert-setup .setup-row .value { font-size: 13px; color: var(--dark); flex: 1; text-align: left; margin-left: 8px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; word-break: break-all; }
+  .alert-setup .mini-copy { background: #92400E; color: white; border: none; border-radius: 4px; padding: 4px 10px; font-size: 11px; font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 0.04em; transition: background 0.15s; flex-shrink: 0; }
+  .alert-setup .mini-copy:hover { background: #B45309; }
+  .alert-setup .mini-copy.copied { background: var(--ok); }
+  .alert-setup .footnote { margin-top: 12px; font-size: 12px; font-style: italic; color: #92400E; }
+
+  .alert-creatives { background: #F5F3FF; border: 1px solid #DDD6FE; border-left: 5px solid #7C3AED; border-radius: 10px; padding: 20px 24px; margin-bottom: 20px; color: #4C1D95; }
+  .alert-creatives h2 { margin: 0 0 6px; font-size: 15px; color: #6D28D9; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 700; }
+  .alert-creatives p { margin: 0 0 14px; font-size: 13px; color: #4C1D95; }
+  .alert-creatives .creative-row { display: flex; justify-content: space-between; align-items: center; background: white; border: 1px solid #DDD6FE; border-radius: 6px; padding: 10px 14px; margin-bottom: 8px; gap: 10px; flex-wrap: wrap; }
+  .alert-creatives .creative-row.sub { margin-left: 24px; background: #FAF5FF; }
+  .alert-creatives .creative-row .label { font-size: 12px; font-weight: 700; color: #6D28D9; text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap; }
+  .alert-creatives .creative-row .value { font-size: 13px; color: var(--dark); flex: 1; text-align: left; margin-left: 8px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; word-break: break-all; }
+  .alert-creatives .link-btn { background: #7C3AED; color: white; border: none; border-radius: 4px; padding: 6px 14px; font-size: 11px; font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 0.04em; text-decoration: none; flex-shrink: 0; transition: background 0.15s; display: inline-flex; align-items: center; gap: 4px; }
+  .alert-creatives .link-btn:hover { background: #6D28D9; color: white; }
+  .alert-creatives .link-btn.disabled { background: #9CA3AF; pointer-events: none; cursor: not-allowed; }
+  .alert-creatives .mini-copy { background: #6D28D9; color: white; border: none; border-radius: 4px; padding: 4px 10px; font-size: 11px; font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 0.04em; transition: background 0.15s; flex-shrink: 0; }
+  .alert-creatives .mini-copy:hover { background: #5B21B6; }
+  .alert-creatives .mini-copy.copied { background: var(--ok); }
+  .alert-creatives .creative-tips { margin-top: 16px; padding: 14px 18px; background: white; border: 1px solid #DDD6FE; border-radius: 8px; }
+  .alert-creatives .creative-tips h3 { font-size: 12px; color: #6D28D9; text-transform: uppercase; letter-spacing: 0.04em; margin: 12px 0 6px; font-weight: 700; }
+  .alert-creatives .creative-tips h3:first-child { margin-top: 0; }
+  .alert-creatives .creative-tips ul { margin: 0; padding-left: 20px; font-size: 13px; color: var(--dark); }
+  .alert-creatives .creative-tips li { margin-bottom: 6px; line-height: 1.55; }
+  .alert-creatives .credentials-note { margin-top: 10px; font-size: 11px; font-style: italic; color: #6B21A8; text-align: center; }
+
+  @media (max-width: 600px) {
+    header { padding: 20px; } header h1 { font-size: 20px; }
+    .container { padding: 16px; } .card { padding: 18px; }
+    .alert-creatives .creative-row.sub { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Generatore Copy Open Day · Med &amp; Tech</h1>
+  <div class="sub">Compila i campi → ricevi 3 copy, form lead, nomenclatura BM ed email post-lancio pronti</div>
+</header>
+
+<div class="container">
+
+  <div class="alert-setup">
+    <h2>⚠️ Attenzione — Setup obbligatorio per le campagne Med &amp; Tech</h2>
+    <p>Prima di lanciare la campagna, verifica di essere sul setup corretto su Meta Ads:</p>
+    <div class="setup-row">
+      <span class="label">Business Manager</span>
+      <span class="value">B&amp;M Srl &middot; <strong>201298286891243</strong></span>
+      <button class="mini-copy" data-copy="201298286891243">Copia ID</button>
+    </div>
+    <div class="setup-row">
+      <span class="label">Account pubblicitario</span>
+      <span class="value">Med &amp; Tech &middot; <strong>533672775128363</strong></span>
+      <button class="mini-copy" data-copy="533672775128363">Copia ID</button>
+    </div>
+    <div class="setup-row">
+      <span class="label">Pagina Facebook</span>
+      <span class="value">Med &amp; Tech</span>
+      <button class="mini-copy" data-copy="Med & Tech">Copia</button>
+    </div>
+    <p class="footnote">Segui sempre la nomenclatura BM generata da questo tool (Campagna · Ad Set · Creatività). Le automazioni di reporting si basano su questa convenzione: nomi sbagliati = dati sbagliati nei report.</p>
+  </div>
+
+  <div class="frontend-card">
+    <h2>📌 Step 1 — Quale Open Day stai lanciando?</h2>
+    <p class="desc">Determina quale set di copy, paragrafo form lead, nomenclatura BM Campagna e link video Canva utilizzare. Le altre risorse (Canva login, struttura campagna) restano identiche.</p>
+    <div class="frontend-tiles">
+      <label class="frontend-tile active" id="tile_total_lift">
+        <input type="radio" name="frontend" value="total_lift" checked />
+        <div class="tile-name">TOTAL LIFT</div>
+        <div class="tile-desc">Front-end Total Lift · medicina rigenerativa per il viso</div>
+      </label>
+      <label class="frontend-tile" id="tile_total_sculpt">
+        <input type="radio" name="frontend" value="total_sculpt" />
+        <div class="tile-name">TOTAL SCULPT</div>
+        <div class="tile-desc">Front-end Total Sculpt · medicina rigenerativa per il corpo</div>
+      </label>
+    </div>
+  </div>
+
+  <div class="alert-creatives">
+    <h2>🎨 Guida creatività<span class="fe-pill" id="fe_pill_creatives">TOTAL LIFT</span></h2>
+    <p>Ogni campagna Open Day deve sempre contenere <strong>1 video + 6 creatives</strong>. Il <strong>video</strong> cambia in base al front-end selezionato sopra; <strong>account Canva</strong> e <strong>struttura campagna</strong> sono identici per entrambi.</p>
+
+    <div class="creative-row" id="canva_video_row">
+      <span class="label">Video da utilizzare</span>
+      <span class="value" id="canva_video_label">Canva · template condiviso (Total Lift)</span>
+      <a class="link-btn" id="canva_video_link" href="https://canva.link/6uirlkjfqayt60q" target="_blank" rel="noopener noreferrer">▶ Apri video</a>
+    </div>
+
+    <div class="creative-row">
+      <span class="label">Canva aziendale</span>
+      <span class="value">Account Centro Estetico Automatico</span>
+      <a class="link-btn" href="https://www.canva.com/login" target="_blank" rel="noopener noreferrer">→ Vai a Canva</a>
+    </div>
+    <div class="creative-row sub">
+      <span class="label">User</span>
+      <span class="value">project@cea.management</span>
+      <button class="mini-copy" data-copy="project@cea.management">Copia</button>
+    </div>
+    <div class="creative-row sub">
+      <span class="label">Password</span>
+      <span class="value">a^Cyh-hTLK96z7</span>
+      <button class="mini-copy" data-copy="a^Cyh-hTLK96z7">Copia</button>
+    </div>
+    <p class="credentials-note">📌 Questo file contiene credenziali in chiaro: condividilo solo con risorse fidate.</p>
+
+    <div class="creative-tips">
+      <h3>📌 Indicazioni operative</h3>
+      <ul>
+        <li>Se il cliente ha già eseguito campagne in passato, <strong>duplica il file Canva originale</strong>: ottimizzi i tempi di output e mantieni coerenza visiva.</li>
+        <li>Verifica <strong>sempre</strong> le informazioni inserite (data, nome struttura, dottoressa, indirizzo) prima di esportare e pubblicare.</li>
+      </ul>
+
+      <h3>📦 Struttura della campagna</h3>
+      <ul>
+        <li>La campagna deve sempre contenere: <strong>1 video + 6 creatives</strong>.</li>
+        <li>Al lancio, attiva solo <strong>1 video + 2 creatives</strong>: gli altri 4 vanno tenuti in stand-by per ottimizzare nei giorni successivi in base ai risultati (CTR, cost-per-lead, qualità dei lead).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📌 Step 2 — Dati della campagna</h2>
+    <p class="desc">Compila i campi obbligatori. Il campo "nome dottoresse per copy" è opzionale: serve solo per studi associati / più professioniste.</p>
+
+    <div class="form-grid">
+      <div class="field">
+        <label for="data_evento">Data dell'Open Day</label>
+        <input type="date" id="data_evento" />
+        <span class="hint">Le date dell'ad set vengono calcolate in automatico</span>
+      </div>
+      <div class="field">
+        <label for="nome_farmacia">Nome struttura</label>
+        <input type="text" id="nome_farmacia" placeholder="FARMACIA MAURO" />
+        <span class="hint">Tutto MAIUSCOLO. Es. FARMACIA MAURO, STUDIO ASSOCIATO ODONTOIATRICO, CLINICA SAN ROCCO</span>
+      </div>
+      <div class="field">
+        <label for="nome_dottoressa">Nome che visualizzeranno i lead su Spoki <span class="opt">(per BM)</span></label>
+        <input type="text" id="nome_dottoressa" placeholder="DOTT.SSA MARCELLA OLIVETTI" />
+        <span class="hint">Tutto MAIUSCOLO con titolo. Multi: DOTT.SSA BASSI &amp; DOTT.SSA BRESCHIGLIARO</span>
+      </div>
+      <div class="field">
+        <label for="nome_dottoressa_copy">Nome dottoressa/e — versione copy <span class="opt">(opzionale)</span></label>
+        <input type="text" id="nome_dottoressa_copy" placeholder="es. le Dott.sse Bassi e Breschigliaro" />
+        <span class="hint">Lascia vuoto per usare lo stesso nome del campo Spoki sopra. Compila solo se vuoi una forma più snella nei copy (utile per studi associati).</span>
+      </div>
+      <div class="field">
+        <label for="cognome_dottoressa">Cognome/i — solo ad set <span class="opt">(da file Campagne B2C)</span></label>
+        <input type="text" id="cognome_dottoressa" placeholder="OLIVETTI" />
+        <span class="hint">📂 Copialo dalla <strong>colonna C</strong> del file <em>"Med &amp; Tech - Campagne B2C"</em>. Tutto MAIUSCOLO. Auto-compilato dal nome sopra (gestisce anche multi-dottoressa), comunque modificabile.</span>
+      </div>
+      <div class="field wide">
+        <label for="indirizzo">Indirizzo struttura</label>
+        <input type="text" id="indirizzo" placeholder="VIA E.BERLINGUER N. 154 ROCCA DI NETO -KR" />
+        <span class="hint">Indirizzo completo, tutto MAIUSCOLO</span>
+      </div>
+      <div class="field wide">
+        <label for="link_condivisione">Link file condivisione appuntamenti <span class="opt">(per email post-lancio)</span></label>
+        <input type="url" id="link_condivisione" placeholder="https://docs.google.com/spreadsheets/d/..." />
+        <span class="hint">Link al Google Sheet (o equivalente) che il telemarketing aggiorna con i lead. Lascia vuoto se non lo hai ancora pronto.</span>
+      </div>
+      <div class="field">
+        <label for="email_to">Email destinatario <span class="opt">(To)</span></label>
+        <input type="email" id="email_to" placeholder="dottore@studio.it" />
+        <span class="hint">Indirizzo principale a cui mandare l'email post-lancio</span>
+      </div>
+      <div class="field">
+        <label for="email_specialist">Email Specialist dell'Open Day <span class="opt">(unica CC variabile)</span></label>
+        <input type="email" id="email_specialist" placeholder="specialist@..." />
+        <span class="hint">La mail è nel file campagna. Se non la trovi, chiedi conferma a Ketty.</span>
+      </div>
+      <div class="field wide">
+        <div class="cc-fixed-info">
+          <span class="cc-fixed-label">📎 CC fisse sempre incluse:</span>
+          <code>teresa.migliozzi@baldangroup.it</code>
+          <code>clienti@medetech.it</code>
+          <code>venturellatlmkcea@virgilio.it</code>
+          <code>info@cea.management</code>
+          <code>marketing@cea.management</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="auto-derived" id="autoDerived" style="display:none;">
+      <div><strong>Data evento:</strong> <span id="d_gg_mese">—</span></div>
+      <div><strong>Periodo ad set:</strong> dal <span id="d_inizio">—</span> al <span id="d_fine">—</span></div>
+      <div><strong>Nome creatività:</strong> <span id="d_full">—</span></div>
+    </div>
+  </div>
+
+  <div id="outputContainer">
+    <div class="card empty-state">
+      ↑ Compila i campi obbligatori per generare gli output.
+    </div>
+  </div>
+
+  <footer>© Centro Estetico Automatico 2026 — Realizzato da Francesco Maria Mosca</footer>
+</div>
+
+<script>
+const MESI = ["GENNAIO","FEBBRAIO","MARZO","APRILE","MAGGIO","GIUGNO","LUGLIO","AGOSTO","SETTEMBRE","OTTOBRE","NOVEMBRE","DICEMBRE"];
+const pad2 = n => String(n).padStart(2, "0");
+const fmtNumerica = d => `${pad2(d.getDate())}.${pad2(d.getMonth()+1)}`;
+const fmtFull = d => `${pad2(d.getDate())}-${pad2(d.getMonth()+1)}-${d.getFullYear()}`;
+const fmtGgMese = d => `${d.getDate()} ${MESI[d.getMonth()]}`;
+const fmtEmailDate = d => `${d.getDate()} ${MESI[d.getMonth()].toLowerCase()} ${d.getFullYear()}`;
+function dateMinusDays(d, days) {
+  const nd = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  nd.setDate(nd.getDate() - days);
+  return nd;
+}
+
+function extractCognomi(nomeCompleto) {
+  if (!nomeCompleto) return "";
+  const segments = nomeCompleto.split(/\s*&\s*|\s+ed\s+|\s+e\s+/i).map(s => s.trim()).filter(Boolean);
+  const cognomi = segments.map(seg => {
+    const cleaned = seg.replace(/\b(DOTT\.SSA|DOTT\.|DR\.SSA|DR\.|DOTTORESSA|DOTTORE|PROF\.SSA|PROF\.)\b/gi, "").trim();
+    const tokens = cleaned.split(/\s+/).filter(Boolean);
+    return tokens.length ? tokens[tokens.length-1].toUpperCase() : "";
+  }).filter(Boolean);
+  return cognomi.join(" & ");
+}
+
+const fields = {
+  data_evento: document.getElementById("data_evento"),
+  nome_farmacia: document.getElementById("nome_farmacia"),
+  nome_dottoressa: document.getElementById("nome_dottoressa"),
+  nome_dottoressa_copy: document.getElementById("nome_dottoressa_copy"),
+  cognome_dottoressa: document.getElementById("cognome_dottoressa"),
+  indirizzo: document.getElementById("indirizzo"),
+  link_condivisione: document.getElementById("link_condivisione"),
+  email_to: document.getElementById("email_to"),
+  email_specialist: document.getElementById("email_specialist")
+};
+
+const FIXED_CC = [
+  "teresa.migliozzi@baldangroup.it",
+  "clienti@medetech.it",
+  "venturellatlmkcea@virgilio.it",
+  "info@cea.management",
+  "marketing@cea.management"
+];
+
+let cognomeAutoFilled = true;
+fields.nome_dottoressa.addEventListener("input", () => {
+  if (cognomeAutoFilled) fields.cognome_dottoressa.value = extractCognomi(fields.nome_dottoressa.value);
+  render();
+});
+fields.cognome_dottoressa.addEventListener("input", () => { cognomeAutoFilled = false; });
+
+Object.values(fields).forEach(f => {
+  f.addEventListener("input", render);
+  f.addEventListener("change", render);
+});
+
+document.querySelectorAll('input[name="frontend"]').forEach(radio => {
+  radio.addEventListener("change", () => {
+    document.querySelectorAll(".frontend-tile").forEach(t => t.classList.remove("active"));
+    if (radio.checked) radio.closest(".frontend-tile").classList.add("active");
+    render();
+  });
+});
+
+// ===== TOTAL LIFT =====
+const TL = {
+  label: "TOTAL LIFT",
+  pillClass: "",
+  canvaVideoLink: "https://canva.link/6uirlkjfqayt60q",
+  canvaVideoLabel: "Canva · template condiviso (Total Lift)",
+  isPlaceholder: false,
+  copy1: (v) => `Viso svuotato, pelle meno compatta, rughe più nette: non aspettare che peggiori.
+
+Quando iniziano a cambiare definizione dell'ovale, tono e compattezza, non è "solo stanchezza": spesso è il risultato di un calo progressivo di collagene, elastina e idratazione profonda.
+
+E più si rimanda, più la pelle tende a perdere struttura.
+
+🧬 Qui entra in gioco la Medicina Estetica Rigenerativa: un approccio clinico avanzato che lavora sulla qualità del tessuto, supportando i naturali processi di rinnovamento cutaneo in modo graduale e armonico.
+
+In pratica: l'obiettivo è riportare indietro l'orologio biologico della pelle, migliorando ciò che la pelle "è", non solo ciò che si vede.
+
+Open Day Total Lift – ${v.DATA_GG_MESE}
+
+📍 Presso ${v.NOME_FARMACIA}, con ${v.NOME_DOTTORESSA_COPY}.
+
+In giornata potrai accedere a un'esperienza pensata per valutare concretamente l'efficacia del Metodo Total Lift:
+
+✅ Valutazione clinica personalizzata GRATUITA
+✅ Mini Trattamento Total Lift – su zona localizzata a un prezzo SUPER PROMO
+
+Un'opportunità esclusiva per intervenire su una micro-zona mirata (es. contorno occhi, guance, linea del sorriso ai lati della bocca, collo, e la zona sopra il labbro con le tipiche "rughette a codice a barre"), definita in base alla valutazione clinica.
+
+✨ Il Metodo Total Lift lavora su 3 livelli (protocolli clinici + tecnologie, con eventuali esosomi secondo indicazione clinica):
+
+1️⃣ Superficie cutanea: pelle più luminosa e uniforme, grana più fine, segni sottili attenuati
+2️⃣ Strati intermedi: più tonicità e sostegno, contorni più armonici (anche collo e décolleté)
+3️⃣ Tessuti profondi: maggiore compattezza, definizione dell'ovale, distensione più visibile e naturale
+
+⚠ Posti limitati: solo 8 slot disponibili nella giornata.
+
+Clicca qui sotto per scoprire l'incredibile offerta che abbiamo studiato per questa giornata esclusiva e bloccare subito uno degli 8 posti disponibili.
+
+📍 ${v.INDIRIZZO}`,
+  copy2: (v) => `Ovale meno definito, pelle meno tonica, rughe che non vanno più via dopo il riposo: spesso non è "solo stanchezza", è un calo progressivo di collagene ed elastina.
+
+🧬 La Medicina Estetica Rigenerativa lavora sulla qualità del tessuto: stimola i naturali processi di rinnovamento per restituire compattezza, tono e luminosità — in modo graduale e armonico, senza stravolgere i tratti.
+
+Open Day Total Lift – ${v.DATA_GG_MESE}
+
+📍 Presso ${v.NOME_FARMACIA}, con ${v.NOME_DOTTORESSA_COPY}:
+
+✅ Valutazione clinica personalizzata GRATUITA
+✅ Mini Trattamento Total Lift su zona localizzata in SUPER PROMO
+
+⚠ Solo 8 slot disponibili nella giornata. Quando finiscono, finiscono.
+
+👇 Clicca qui sotto e blocca subito il tuo posto.
+
+📍 ${v.INDIRIZZO}`,
+  copy3: (v) => `✋ STOP a creme che promettono e non mantengono.
+
+Se l'ovale cala, la pelle si svuota e le rughe restano anche dopo il riposo, il problema non è "fuori": è nel tessuto.
+
+E nessuna crema, da sola, può risolverlo.
+
+🧬 Qui entra in gioco la Medicina Estetica Rigenerativa: un approccio clinico che agisce sulla qualità del tessuto, non solo sull'aspetto. Stimola i naturali processi di rinnovamento e riporta indietro l'orologio biologico della pelle — gradualmente, senza stravolgerti i tratti.
+
+✨ ${v.DATA_GG_MESE} → OPEN DAY TOTAL LIFT presso ${v.NOME_FARMACIA}, con ${v.NOME_DOTTORESSA_COPY}.
+
+Cosa ti aspetta in giornata:
+
+✅ Valutazione clinica personalizzata — GRATUITA
+✅ Mini Trattamento Total Lift su zona localizzata — SUPER PROMO
+✅ Protocollo su 3 livelli (superficie + strati intermedi + tessuti profondi) per un risultato visibile, armonico e naturale — senza "effetto fatto"
+
+Le aree su cui lavoriamo (in base alla valutazione): contorno occhi, guance, linea del sorriso, collo, "codice a barre" sopra il labbro.
+
+⚠ Solo 8 slot. Niente liste d'attesa, niente recuperi: quando finiscono, finiscono.
+
+👇 Clicca qui sotto, scopri l'offerta riservata a questa giornata e prenota ORA il tuo posto.
+
+📍 ${v.INDIRIZZO}`,
+  formParagrafo: (v) => `Open Day Total Lift – ${v.DATA_GG_MESE}
+
+📍 Presso ${v.NOME_FARMACIA}, con ${v.NOME_DOTTORESSA_COPY}.
+
+In giornata potrai accedere a un'esperienza pensata per valutare concretamente l'efficacia del Metodo Total Lift:
+
+✅ Valutazione clinica personalizzata GRATUITA
+✅ Mini Trattamento Total Lift – su zona localizzata a un prezzo SUPER PROMO
+
+Un'opportunità esclusiva per intervenire su una micro-zona mirata (es. contorno occhi, guance, linea del sorriso ai lati della bocca, collo, e la zona sopra il labbro con le tipiche "rughette a codice a barre"), definita in base alla valutazione clinica.
+
+✨ Il Metodo Total Lift lavora su 3 livelli (protocolli clinici + tecnologie, con eventuali esosomi secondo indicazione clinica):
+
+1️⃣ Superficie cutanea: pelle più luminosa e uniforme, grana più fine, segni sottili attenuati
+2️⃣ Strati intermedi: più tonicità e sostegno, contorni più armonici (anche collo e décolleté)
+3️⃣ Tessuti profondi: maggiore compattezza, definizione dell'ovale, distensione più visibile e naturale
+
+⚠ Posti limitati: solo 8 slot disponibili nella giornata.
+
+Clicca qui sotto per scoprire l'incredibile offerta che abbiamo studiato per questa giornata esclusiva e bloccare subito uno degli 8 posti disponibili.
+
+📍 ${v.INDIRIZZO}`,
+  nomCampagna: (v) => `Open Day - Total Lift - ${v.NOME_DOTTORESSA}`
+};
+
+// ===== TOTAL SCULPT =====
+const TS = {
+  label: "TOTAL SCULPT",
+  pillClass: "sculpt",
+  canvaVideoLink: "https://canva.link/efztwf206ahumhm",
+  canvaVideoLabel: "Canva · template condiviso (Total Sculpt)",
+  isPlaceholder: false,
+  // ===== TOTAL SCULPT — nuova copy unica in rotazione (12/05/2026) =====
+  // copy1, copy2, copy3 ora puntano alla stessa narrativa: niente A/B testing su Sculpt.
+  // Placeholder dinamici: ${v.NOME_FARMACIA}, ${v.DATA_GG_MESE}.
+  copy1: (v) => `Questo corpo non mi piace più.
+Non è solo gonfiore.
+Non è solo cellulite.
+Non è solo "mi vedo meno tonica".
+È la tua silhouette che è cambiata: pelle meno compatta, tono che scende, muscolo meno definito, adiposità localizzate che restano sempre lì, anche quando provi a drenare, massaggiare o fare trattamenti corpo tradizionali.
+
+Ed è proprio qui che nasce la differenza.
+
+Un normale trattamento estetico spesso lavora in modo generico: drena, stimola, massaggia, migliora momentaneamente la sensazione di leggerezza.
+
+Total Sculpt, invece, lavora con una logica diversa.
+
+Non nasce come il classico trattamento corpo da cabina.
+
+È un protocollo di MEDICINA RIGENERATIVA IN AMBITO ESTETICO, pensato per intervenire in modo più mirato sulla qualità del tessuto, sul tono muscolare e sulle adiposità localizzate.
+
+➡️ Non si limita a "trattare la zona".
+Studia la zona. La valuta. Capisce cosa sta succedendo davvero. E costruisce un intervento più preciso, più focalizzato, più evoluto.
+
+Perché se il corpo ha perso tono, compattezza e definizione, spesso non basta "drenare".
+
+Serve lavorare su più livelli:
+✅ sul muscolo, per aiutare la zona a ritrovare tono e sostegno
+✅ sul tessuto, per migliorare compattezza e qualità della pelle
+✅ sulle adiposità localizzate, per favorire una silhouette più asciutta e definita
+✅ sull'armonia della forma, per un risultato più naturale e proporzionato
+
+Questo è il vero salto di livello.
+
+Total Sculpt non è il solito trattamento estetico.
+È un approccio più strutturato, più sartoriale, più vicino a una logica clinica: prima si valuta, poi si interviene.
+
+Con MED&TECH non esistono percorsi standard.
+
+Si parte da una valutazione clinica personalizzata, per capire cosa sta succedendo nella tua zona critica: tono, accumulo localizzato, qualità del tessuto e obiettivo reale da raggiungere.
+
+Presso ${v.NOME_FARMACIA}, in data ${v.DATA_GG_MESE}, si svolgerà l'Open Day Total Sculpt.
+
+Durante questa giornata non farai una semplice prova estetica.
+
+Farai un MINI TRATTAMENTO SCULPT LOCALIZZATO su una tua zona critica.
+
+Una sessione breve ma reale, super focalizzata, pensata per farti percepire concretamente la differenza tra un normale trattamento estetico e un protocollo di rimodellamento immediato applicato con criterio clinico.
+
+Cosa comprende l'Open Day:
+✅ Valutazione clinica personalizzata
+✅ Studio della tua zona critica
+✅ Mini trattamento Sculpt localizzato
+✅ Analisi del tono, del tessuto e delle adiposità localizzate
+✅ Strategia su come costruire un programma ad hoc per il tuo corpo
+✅ Focus su rimodellamento immediato, compattezza e definizione
+
+Per questa giornata abbiamo riservato un'offerta speciale, valida solo durante l'Open Day.
+
+Non è il classico "trattamentino prova".
+
+È un mini trattamento mirato, pensato per farti scoprire in modo concreto il potenziale di Total Sculpt sulla zona che oggi vuoi vedere più tonica, asciutta e scolpita.
+
+✅ Posti disponibili: solo 8.
+Quando finiscono, si chiude.
+
+Clicca qui sotto e ti spieghiamo tutto.`,
+  copy2: (v) => `Questo corpo non mi piace più.
+Non è solo gonfiore.
+Non è solo cellulite.
+Non è solo "mi vedo meno tonica".
+È la tua silhouette che è cambiata: pelle meno compatta, tono che scende, muscolo meno definito, adiposità localizzate che restano sempre lì, anche quando provi a drenare, massaggiare o fare trattamenti corpo tradizionali.
+
+Ed è proprio qui che nasce la differenza.
+
+Un normale trattamento estetico spesso lavora in modo generico: drena, stimola, massaggia, migliora momentaneamente la sensazione di leggerezza.
+
+Total Sculpt, invece, lavora con una logica diversa.
+
+Non nasce come il classico trattamento corpo da cabina.
+
+È un protocollo di MEDICINA RIGENERATIVA IN AMBITO ESTETICO, pensato per intervenire in modo più mirato sulla qualità del tessuto, sul tono muscolare e sulle adiposità localizzate.
+
+➡️ Non si limita a "trattare la zona".
+Studia la zona. La valuta. Capisce cosa sta succedendo davvero. E costruisce un intervento più preciso, più focalizzato, più evoluto.
+
+Perché se il corpo ha perso tono, compattezza e definizione, spesso non basta "drenare".
+
+Serve lavorare su più livelli:
+✅ sul muscolo, per aiutare la zona a ritrovare tono e sostegno
+✅ sul tessuto, per migliorare compattezza e qualità della pelle
+✅ sulle adiposità localizzate, per favorire una silhouette più asciutta e definita
+✅ sull'armonia della forma, per un risultato più naturale e proporzionato
+
+Questo è il vero salto di livello.
+
+Total Sculpt non è il solito trattamento estetico.
+È un approccio più strutturato, più sartoriale, più vicino a una logica clinica: prima si valuta, poi si interviene.
+
+Con MED&TECH non esistono percorsi standard.
+
+Si parte da una valutazione clinica personalizzata, per capire cosa sta succedendo nella tua zona critica: tono, accumulo localizzato, qualità del tessuto e obiettivo reale da raggiungere.
+
+Presso ${v.NOME_FARMACIA}, in data ${v.DATA_GG_MESE}, si svolgerà l'Open Day Total Sculpt.
+
+Durante questa giornata non farai una semplice prova estetica.
+
+Farai un MINI TRATTAMENTO SCULPT LOCALIZZATO su una tua zona critica.
+
+Una sessione breve ma reale, super focalizzata, pensata per farti percepire concretamente la differenza tra un normale trattamento estetico e un protocollo di rimodellamento immediato applicato con criterio clinico.
+
+Cosa comprende l'Open Day:
+✅ Valutazione clinica personalizzata
+✅ Studio della tua zona critica
+✅ Mini trattamento Sculpt localizzato
+✅ Analisi del tono, del tessuto e delle adiposità localizzate
+✅ Strategia su come costruire un programma ad hoc per il tuo corpo
+✅ Focus su rimodellamento immediato, compattezza e definizione
+
+Per questa giornata abbiamo riservato un'offerta speciale, valida solo durante l'Open Day.
+
+Non è il classico "trattamentino prova".
+
+È un mini trattamento mirato, pensato per farti scoprire in modo concreto il potenziale di Total Sculpt sulla zona che oggi vuoi vedere più tonica, asciutta e scolpita.
+
+✅ Posti disponibili: solo 8.
+Quando finiscono, si chiude.
+
+Clicca qui sotto e ti spieghiamo tutto.`,
+  copy3: (v) => `Questo corpo non mi piace più.
+Non è solo gonfiore.
+Non è solo cellulite.
+Non è solo "mi vedo meno tonica".
+È la tua silhouette che è cambiata: pelle meno compatta, tono che scende, muscolo meno definito, adiposità localizzate che restano sempre lì, anche quando provi a drenare, massaggiare o fare trattamenti corpo tradizionali.
+
+Ed è proprio qui che nasce la differenza.
+
+Un normale trattamento estetico spesso lavora in modo generico: drena, stimola, massaggia, migliora momentaneamente la sensazione di leggerezza.
+
+Total Sculpt, invece, lavora con una logica diversa.
+
+Non nasce come il classico trattamento corpo da cabina.
+
+È un protocollo di MEDICINA RIGENERATIVA IN AMBITO ESTETICO, pensato per intervenire in modo più mirato sulla qualità del tessuto, sul tono muscolare e sulle adiposità localizzate.
+
+➡️ Non si limita a "trattare la zona".
+Studia la zona. La valuta. Capisce cosa sta succedendo davvero. E costruisce un intervento più preciso, più focalizzato, più evoluto.
+
+Perché se il corpo ha perso tono, compattezza e definizione, spesso non basta "drenare".
+
+Serve lavorare su più livelli:
+✅ sul muscolo, per aiutare la zona a ritrovare tono e sostegno
+✅ sul tessuto, per migliorare compattezza e qualità della pelle
+✅ sulle adiposità localizzate, per favorire una silhouette più asciutta e definita
+✅ sull'armonia della forma, per un risultato più naturale e proporzionato
+
+Questo è il vero salto di livello.
+
+Total Sculpt non è il solito trattamento estetico.
+È un approccio più strutturato, più sartoriale, più vicino a una logica clinica: prima si valuta, poi si interviene.
+
+Con MED&TECH non esistono percorsi standard.
+
+Si parte da una valutazione clinica personalizzata, per capire cosa sta succedendo nella tua zona critica: tono, accumulo localizzato, qualità del tessuto e obiettivo reale da raggiungere.
+
+Presso ${v.NOME_FARMACIA}, in data ${v.DATA_GG_MESE}, si svolgerà l'Open Day Total Sculpt.
+
+Durante questa giornata non farai una semplice prova estetica.
+
+Farai un MINI TRATTAMENTO SCULPT LOCALIZZATO su una tua zona critica.
+
+Una sessione breve ma reale, super focalizzata, pensata per farti percepire concretamente la differenza tra un normale trattamento estetico e un protocollo di rimodellamento immediato applicato con criterio clinico.
+
+Cosa comprende l'Open Day:
+✅ Valutazione clinica personalizzata
+✅ Studio della tua zona critica
+✅ Mini trattamento Sculpt localizzato
+✅ Analisi del tono, del tessuto e delle adiposità localizzate
+✅ Strategia su come costruire un programma ad hoc per il tuo corpo
+✅ Focus su rimodellamento immediato, compattezza e definizione
+
+Per questa giornata abbiamo riservato un'offerta speciale, valida solo durante l'Open Day.
+
+Non è il classico "trattamentino prova".
+
+È un mini trattamento mirato, pensato per farti scoprire in modo concreto il potenziale di Total Sculpt sulla zona che oggi vuoi vedere più tonica, asciutta e scolpita.
+
+✅ Posti disponibili: solo 8.
+Quando finiscono, si chiude.
+
+Clicca qui sotto e ti spieghiamo tutto.`,
+  formParagrafo: (v) => `Open Day Total Sculpt – ${v.DATA_GG_MESE}
+
+📍 Presso ${v.NOME_FARMACIA}.
+
+Total Sculpt è un protocollo di MEDICINA RIGENERATIVA IN AMBITO ESTETICO, pensato per intervenire sulla zona critica con una logica clinica: dal muscolo (tono e compattezza) al tessuto (qualità della pelle), fino alle adiposità localizzate.
+
+L'obiettivo non è solo "drenare": è restituire alla silhouette tono, compattezza e definizione.
+
+Cosa ti aspetta in giornata:
+
+✅ Valutazione clinica personalizzata
+✅ Studio della tua zona critica
+✅ Mini Trattamento Sculpt localizzato
+✅ Analisi del tono, del tessuto e delle adiposità localizzate
+✅ Strategia per costruire un programma ad hoc per il tuo corpo
+✅ Focus su rimodellamento immediato, compattezza e definizione
+
+Per questa giornata abbiamo riservato un'offerta speciale, valida solo durante l'Open Day.
+
+⚠ Posti disponibili: solo 8. Quando finiscono, si chiude.
+
+Clicca qui sotto e ti spieghiamo tutto.`,
+  nomCampagna: (v) => `Open Day - Total Sculpt - ${v.NOME_DOTTORESSA}`
+};
+
+const FRONTENDS = { total_lift: TL, total_sculpt: TS };
+
+function getActiveFrontendKey() {
+  const checked = document.querySelector('input[name="frontend"]:checked');
+  return checked ? checked.value : "total_lift";
+}
+function getActiveFrontend() {
+  return FRONTENDS[getActiveFrontendKey()] || TL;
+}
+
+function getValues() {
+  const dataStr = fields.data_evento.value;
+  if (!dataStr) return null;
+  const [y, m, d] = dataStr.split("-").map(Number);
+  const evento = new Date(y, m-1, d);
+  const inizio = dateMinusDays(evento, 14);
+  const fine = dateMinusDays(evento, 1);
+  const nomeBM = fields.nome_dottoressa.value.trim();
+  const nomeCopy = fields.nome_dottoressa_copy.value.trim() || nomeBM;
+
+  const v = {
+    DATA_GG_MESE: fmtGgMese(evento),
+    DATA_NUMERICA: fmtNumerica(evento),
+    DATA_FULL: fmtFull(evento),
+    DATA_EMAIL: fmtEmailDate(evento),
+    DATA_INIZIO_ADSET: fmtNumerica(inizio),
+    DATA_FINE_ADSET: fmtNumerica(fine),
+    NOME_FARMACIA: fields.nome_farmacia.value.trim(),
+    NOME_DOTTORESSA: nomeBM,
+    NOME_DOTTORESSA_COPY: nomeCopy,
+    COGNOME_DOTTORESSA: fields.cognome_dottoressa.value.trim(),
+    INDIRIZZO: fields.indirizzo.value.trim(),
+    LINK_CONDIVISIONE: fields.link_condivisione.value.trim(),
+    EMAIL_TO: fields.email_to.value.trim(),
+    EMAIL_SPECIALIST: fields.email_specialist.value.trim(),
+    EMAIL_CC: [...FIXED_CC, fields.email_specialist.value.trim()].filter(Boolean).join(",")
+  };
+
+  const required = ["NOME_FARMACIA","NOME_DOTTORESSA","COGNOME_DOTTORESSA","INDIRIZZO"];
+  for (const k of required) if (!v[k]) return null;
+  return v;
+}
+
+const FORM_TITOLO = (v, fe) => `OPEN DAY ${fe.label} -${v.DATA_NUMERICA}| ${v.NOME_FARMACIA}`;
+const FORM_NOME = (v) => v.INDIRIZZO;
+const FORM_DOMANDE = (v) => `1) Sei consapevole che ${v.NOME_FARMACIA} si trovi in ${v.INDIRIZZO}?`;
+const NOM_ADSET = (v) => `PUBBLICO FREDDO - ${v.COGNOME_DOTTORESSA} | Dal ${v.DATA_INIZIO_ADSET} al ${v.DATA_FINE_ADSET}`;
+const NOM_CREATIVITA = (v) => v.DATA_FULL;
+
+function buildMailto(v, fe) {
+  const subject = encodeURIComponent(EMAIL_OGGETTO(v));
+  const body = encodeURIComponent(EMAIL_CORPO(v, fe));
+  const to = encodeURIComponent(v.EMAIL_TO || "");
+  const cc = v.EMAIL_CC ? encodeURIComponent(v.EMAIL_CC) : "";
+  let url = `mailto:${to}?subject=${subject}`;
+  if (cc) url += `&cc=${cc}`;
+  url += `&body=${body}`;
+  return url;
+}
+
+const EMAIL_OGGETTO = (v) => `Conferma lancio campagna Open Day Med & Tech — ${v.NOME_FARMACIA} ${v.DATA_EMAIL}`;
+
+const EMAIL_CORPO = (v, fe) => `Gentilissimi,
+
+con la presente vi confermiamo che la campagna di Med & Tech per l'Open Day del ${v.DATA_EMAIL} è ufficialmente partita.
+
+Una volta che la campagna è attiva, il nostro telemarketing si occuperà man mano di fissare gli appuntamenti, che potrete vedere nel file in condivisione al seguente link: ${v.LINK_CONDIVISIONE || "[INSERIRE LINK FILE CONDIVISIONE]"}
+
+Questo file si aggiornerà automaticamente con i nuovi contatti man mano che arrivano.
+
+Inoltre, per presa visione, in allegato trovate le Creatività e di seguito i Copy utilizzati:
+
+———————————————————————————————
+COPY 1
+———————————————————————————————
+${fe.copy1(v)}
+
+———————————————————————————————
+COPY 2
+———————————————————————————————
+${fe.copy2(v)}
+
+———————————————————————————————
+COPY 3
+———————————————————————————————
+${fe.copy3(v)}
+
+———————————————————————————————
+
+Rimaniamo a disposizione per eventuali chiarimenti.
+
+Cordiali saluti`;
+
+function updateCanvaSection(fe) {
+  document.getElementById("canva_video_link").href = fe.canvaVideoLink;
+  document.getElementById("canva_video_label").textContent = fe.canvaVideoLabel;
+  const link = document.getElementById("canva_video_link");
+  if (fe.canvaVideoLink === "#") link.classList.add("disabled");
+  else link.classList.remove("disabled");
+  const pill = document.getElementById("fe_pill_creatives");
+  if (pill) {
+    pill.textContent = fe.label;
+    pill.className = "fe-pill" + (fe.pillClass ? " " + fe.pillClass : "");
+  }
+}
+
+function render() {
+  const fe = getActiveFrontend();
+  updateCanvaSection(fe);
+
+  const v = getValues();
+  const container = document.getElementById("outputContainer");
+  const auto = document.getElementById("autoDerived");
+
+  if (!v) {
+    auto.style.display = "none";
+    container.innerHTML = `<div class="card empty-state">↑ Compila i campi obbligatori per generare gli output.</div>`;
+    return;
+  }
+
+  auto.style.display = "grid";
+  document.getElementById("d_gg_mese").textContent = v.DATA_GG_MESE;
+  document.getElementById("d_inizio").textContent = v.DATA_INIZIO_ADSET;
+  document.getElementById("d_fine").textContent = v.DATA_FINE_ADSET;
+  document.getElementById("d_full").textContent = v.DATA_FULL;
+
+  const pill = `<div class="frontend-active-pill ${fe.pillClass}">Front-end attivo: ${fe.label}${fe.isPlaceholder ? " · 🚧 placeholder" : ""}</div>`;
+
+  const blocks = [
+    { id: "copy1", title: "Copy 1 · MASTER", meta: "Versione approvata, completa", body: fe.copy1(v), red: false },
+    { id: "copy2", title: "Copy 2 · CORTA", meta: "Snella, stesso tono clinico", body: fe.copy2(v), red: false },
+    { id: "copy3", title: "Copy 3 · CTR KILLER", meta: "Hook duro, max CTR pubblico freddo", body: fe.copy3(v), red: true },
+    { id: "form_nome", title: "Form Meta Lead · NOME FORM", meta: "Nome interno del form lead (admin BM) — l'indirizzo della struttura", body: FORM_NOME(v), red: false },
+    { id: "form_titolo", title: "Form Meta Lead · TITOLO", meta: "Headline mostrata al lead — front-end + nome struttura", body: FORM_TITOLO(v, fe), red: false },
+    { id: "form_par", title: "Form Meta Lead · PARAGRAFO", meta: "Descrizione dell'offerta sotto il titolo del form", body: fe.formParagrafo(v), red: false },
+    { id: "form_domande", title: "Form Meta Lead · DOMANDE", meta: "Domande personalizzate del form lead", body: FORM_DOMANDE(v), red: false },
+    { id: "nom_camp", title: "Nomenclatura BM · CAMPAGNA", meta: "Nome livello Campagna", body: fe.nomCampagna(v), red: false },
+    { id: "nom_adset", title: "Nomenclatura BM · AD SET", meta: "Nome livello Ad Set", body: NOM_ADSET(v), red: false },
+    { id: "nom_crea", title: "Nomenclatura BM · CREATIVITÀ", meta: "Nome dell'inserzione/creatività", body: NOM_CREATIVITA(v), red: false },
+    { id: "email_open", title: "Email · APRI NEL TUO CLIENT", meta: "Click per aprire la mail con destinatario, CC, oggetto e corpo già pre-compilati", body: `To: ${v.EMAIL_TO || "[non compilato — il client lo lascerà vuoto]"}\nCC fisse: ${FIXED_CC.join(", ")}\nCC Specialist: ${v.EMAIL_SPECIALIST || "[non compilato]"}\nOggetto: ${EMAIL_OGGETTO(v)}\n\nClick sul bottone "▶ Apri" per aprire la bozza nel tuo client mail.\nRicordati di allegare le creatività prima di inviare.`, mailto: buildMailto(v, fe), blue: true },
+    { id: "email_subj", title: "Email post-lancio · OGGETTO", meta: "Da inviare al dottore subito dopo il lancio della campagna", body: EMAIL_OGGETTO(v), red: false },
+    { id: "email_body", title: "Email post-lancio · CORPO", meta: "Allegare le creatività; i 3 copy sono già embedded nel testo", body: EMAIL_CORPO(v, fe), red: false }
+  ];
+
+  container.innerHTML = pill + `<div class="output-grid">${blocks.map(b => {
+    const headClass = b.red ? 'red' : (b.blue ? 'blue' : '');
+    const button = b.mailto
+      ? `<a class="copy-btn mailto-btn" href="${b.mailto}">▶ Apri</a>`
+      : `<button class="copy-btn" data-target="${b.id}">Copia</button>`;
+    return `
+    <div class="out-card">
+      <div class="out-head ${headClass}">
+        <div><h3>${b.title}</h3><div class="meta">${b.meta}</div></div>
+        ${button}
+      </div>
+      <div class="out-body" id="${b.id}">${escapeHtml(b.body)}</div>
+    </div>`;
+  }).join("")}</div>`;
+
+  container.querySelectorAll(".copy-btn:not(.mailto-btn)").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const target = document.getElementById(btn.dataset.target);
+      const text = target.textContent;
+      try { await navigator.clipboard.writeText(text); }
+      catch {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+      }
+      const original = btn.textContent;
+      btn.textContent = "✓ Copiato";
+      btn.classList.add("copied");
+      setTimeout(() => { btn.textContent = original; btn.classList.remove("copied"); }, 1500);
+    });
+  });
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+document.querySelectorAll(".mini-copy").forEach(btn => {
+  btn.addEventListener("click", async () => {
+    const text = btn.dataset.copy;
+    try { await navigator.clipboard.writeText(text); }
+    catch {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    }
+    const original = btn.textContent;
+    btn.textContent = "✓ Copiato";
+    btn.classList.add("copied");
+    setTimeout(() => { btn.textContent = original; btn.classList.remove("copied"); }, 1500);
+  });
+});
+
+render();
+</script>
+
+</body>
+</html>
