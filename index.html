@@ -39,6 +39,12 @@
   .frontend-tile.active { border-color: var(--accent); background: #ECFDF5; box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12); }
   .frontend-tile.active .tile-name { color: var(--accent); }
   .frontend-tile.active::after { content: "✓"; position: absolute; top: 14px; right: 16px; background: var(--accent); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+  .tl-variant-section { margin-top: 18px; padding-top: 18px; border-top: 1px dashed var(--border); display: none; }
+  .tl-variant-section.show { display: block; }
+  .tl-variant-label { font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em; margin: 0 0 10px; }
+  .variant-tile { padding: 14px 18px 12px; }
+  .variant-tile .tile-name { font-size: 15px; }
+  .variant-tile .tile-desc { font-size: 11px; }
   .alert-creatives .fe-pill { display: inline-block; background: var(--accent); color: white; font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 999px; margin-left: 8px; text-transform: uppercase; letter-spacing: 0.05em; vertical-align: middle; }
   .alert-creatives .fe-pill.sculpt { background: #B45309; }
   .cc-fixed-info { background: var(--light); border-radius: 6px; padding: 10px 14px; font-size: 12px; color: var(--dark); line-height: 2; }
@@ -149,6 +155,22 @@
         <div class="tile-desc">Front-end Total Sculpt · medicina rigenerativa per il corpo</div>
       </label>
     </div>
+
+    <div id="tl_variant_section" class="tl-variant-section">
+      <p class="tl-variant-label">Tipo offerta Total Lift:</p>
+      <div class="frontend-tiles tl-variant-tiles">
+        <label class="frontend-tile variant-tile active" id="tile_tl_paid">
+          <input type="radio" name="tl_variant" value="paid" checked />
+          <div class="tile-name">💶 A PAGAMENTO</div>
+          <div class="tile-desc">Mini Trattamento Total Lift in SUPER PROMO (offerta a prezzo agevolato)</div>
+        </label>
+        <label class="frontend-tile variant-tile" id="tile_tl_free">
+          <input type="radio" name="tl_variant" value="free" />
+          <div class="tile-name">🎁 GRATUITO</div>
+          <div class="tile-desc">Prova gratuita Total Lift — mini trattamento dimostrativo a carico nostro</div>
+        </label>
+      </div>
+    </div>
   </div>
 
   <div class="alert-creatives">
@@ -173,8 +195,8 @@
     </div>
     <div class="creative-row sub">
       <span class="label">Password</span>
-      <span class="value">a^Cyh-hTLK96z7</span>
-      <button class="mini-copy" data-copy="a^Cyh-hTLK96z7">Copia</button>
+      <span class="value">3?&quot;{+3S73lp'</span>
+      <button class="mini-copy" data-copy="3?&quot;{+3S73lp'">Copia</button>
     </div>
     <p class="credentials-note">📌 Questo file contiene credenziali in chiaro: condividilo solo con risorse fidate.</p>
 
@@ -327,13 +349,41 @@ Object.values(fields).forEach(f => {
   f.addEventListener("change", render);
 });
 
+function refreshTileActiveStates() {
+  document.querySelectorAll('input[name="frontend"]').forEach(r => {
+    const tile = r.closest(".frontend-tile");
+    if (tile) tile.classList.toggle("active", r.checked);
+  });
+  document.querySelectorAll('input[name="tl_variant"]').forEach(r => {
+    const tile = r.closest(".frontend-tile");
+    if (tile) tile.classList.toggle("active", r.checked);
+  });
+}
+
+function refreshTLVariantVisibility() {
+  const feChecked = document.querySelector('input[name="frontend"]:checked');
+  const showVariant = feChecked && feChecked.value === "total_lift";
+  const section = document.getElementById("tl_variant_section");
+  if (section) section.classList.toggle("show", showVariant);
+}
+
 document.querySelectorAll('input[name="frontend"]').forEach(radio => {
   radio.addEventListener("change", () => {
-    document.querySelectorAll(".frontend-tile").forEach(t => t.classList.remove("active"));
-    if (radio.checked) radio.closest(".frontend-tile").classList.add("active");
+    refreshTileActiveStates();
+    refreshTLVariantVisibility();
     render();
   });
 });
+
+document.querySelectorAll('input[name="tl_variant"]').forEach(radio => {
+  radio.addEventListener("change", () => {
+    refreshTileActiveStates();
+    render();
+  });
+});
+
+// Init: mostra sub-tile se TL selezionato di default
+refreshTLVariantVisibility();
 
 // ===== TOTAL LIFT =====
 const TL = {
@@ -659,11 +709,125 @@ Clicca qui sotto e ti spieghiamo tutto.`,
   nomCampagna: (v) => `Open Day - Total Sculpt - ${v.NOME_DOTTORESSA}`
 };
 
-const FRONTENDS = { total_lift: TL, total_sculpt: TS };
+// ===== TOTAL LIFT — variante GRATUITA =====
+const TL_FREE = {
+  label: "TOTAL LIFT",
+  variantLabel: "Gratuito",
+  pillClass: "",
+  canvaVideoLink: TL.canvaVideoLink,
+  canvaVideoLabel: "Canva · template condiviso (Total Lift)",
+  isPlaceholder: false,
+  copy1: (v) => `Viso svuotato, pelle meno compatta, rughe più nette: vorresti capire se la Medicina Estetica Rigenerativa fa davvero per te, ma senza rischiare.
+
+È normale: prima di scegliere un percorso, è giusto volerlo provare.
+
+🧬 Per questo abbiamo pensato a una PROVA GRATUITA Total Lift: un mini trattamento dimostrativo sulla tua zona critica, completamente a carico nostro, per farti toccare con mano l'efficacia del Metodo direttamente sulla tua pelle.
+
+Open Day Total Lift – ${v.DATA_GG_MESE}
+
+📍 Presso ${v.NOME_FARMACIA}, con ${v.NOME_DOTTORESSA_COPY}.
+
+In giornata, completamente GRATIS:
+
+✅ Valutazione clinica personalizzata
+✅ Prova gratuita Total Lift — mini trattamento dimostrativo su una micro-zona mirata (es. contorno occhi, guance, linea del sorriso, collo, "codice a barre" sopra il labbro)
+✅ Analisi del risultato immediato + proposta di percorso personalizzato, senza impegno
+
+✨ Il Metodo Total Lift lavora su 3 livelli (protocolli clinici + tecnologie, con eventuali esosomi secondo indicazione clinica):
+
+1️⃣ Superficie cutanea: pelle più luminosa e uniforme, grana più fine, segni sottili attenuati
+2️⃣ Strati intermedi: più tonicità e sostegno, contorni più armonici (anche collo e décolleté)
+3️⃣ Tessuti profondi: maggiore compattezza, definizione dell'ovale, distensione più visibile e naturale
+
+⚠ Posti limitati: solo 8 slot disponibili nella giornata, riservati a chi prenota in anticipo.
+
+Nessun costo, nessun impegno: solo l'opportunità di scoprire concretamente cosa può fare il Metodo Total Lift sulla tua pelle.
+
+👇 Clicca qui sotto e blocca subito la tua prova gratuita.
+
+📍 ${v.INDIRIZZO}`,
+  copy2: (v) => `Vorresti provare la Medicina Estetica Rigenerativa, ma vuoi capire se fa davvero per te prima di iniziare un percorso? Hai ragione.
+
+🧬 Per l'Open Day Total Lift abbiamo riservato una PROVA GRATUITA del Metodo: un mini trattamento dimostrativo sulla tua pelle, completamente a carico nostro.
+
+Open Day Total Lift – ${v.DATA_GG_MESE}
+
+📍 Presso ${v.NOME_FARMACIA}, con ${v.NOME_DOTTORESSA_COPY}:
+
+✅ Valutazione clinica personalizzata GRATUITA
+✅ Prova gratuita Total Lift su una zona localizzata
+✅ Proposta di percorso personalizzato, senza impegno
+
+⚠ Solo 8 slot disponibili nella giornata. Quando finiscono, finiscono.
+
+👇 Clicca qui sotto e blocca subito la tua prova gratuita.
+
+📍 ${v.INDIRIZZO}`,
+  copy3: (v) => `✋ STOP a creme e prodotti che promettono e non mantengono.
+
+E se prima di iniziare un percorso potessi provare GRATIS cosa fa davvero un protocollo clinico sulla tua pelle?
+
+🧬 Per l'Open Day Total Lift abbiamo riservato una PROVA GRATUITA del Metodo: un mini trattamento dimostrativo sulla tua zona critica, completamente a carico nostro.
+
+✨ ${v.DATA_GG_MESE} → OPEN DAY TOTAL LIFT presso ${v.NOME_FARMACIA}, con ${v.NOME_DOTTORESSA_COPY}.
+
+Cosa ti aspetta in giornata, completamente GRATIS:
+
+✅ Valutazione clinica personalizzata
+✅ Prova gratuita Total Lift su una micro-zona mirata (contorno occhi, guance, linea del sorriso, collo, "codice a barre" sopra il labbro)
+✅ Analisi del risultato immediato + proposta di percorso, senza impegno
+
+⚠ Solo 8 slot. Niente liste d'attesa, niente recuperi: quando finiscono, si chiude.
+
+👇 Clicca qui sotto e blocca ORA la tua prova gratuita.
+
+📍 ${v.INDIRIZZO}`,
+  formParagrafo: (v) => `Open Day Total Lift – ${v.DATA_GG_MESE}
+
+📍 Presso ${v.NOME_FARMACIA}, con ${v.NOME_DOTTORESSA_COPY}.
+
+In giornata, completamente GRATIS, potrai accedere a un'esperienza pensata per farti scoprire concretamente l'efficacia del Metodo Total Lift sulla tua pelle:
+
+✅ Valutazione clinica personalizzata
+✅ Prova gratuita Total Lift — mini trattamento dimostrativo su una zona localizzata
+✅ Analisi del risultato immediato + proposta di percorso personalizzato, senza impegno
+
+Un'opportunità esclusiva per intervenire su una micro-zona mirata (es. contorno occhi, guance, linea del sorriso ai lati della bocca, collo, e la zona sopra il labbro con le tipiche "rughette a codice a barre"), definita in base alla valutazione clinica.
+
+✨ Il Metodo Total Lift lavora su 3 livelli (protocolli clinici + tecnologie, con eventuali esosomi secondo indicazione clinica):
+
+1️⃣ Superficie cutanea: pelle più luminosa e uniforme, grana più fine, segni sottili attenuati
+2️⃣ Strati intermedi: più tonicità e sostegno, contorni più armonici (anche collo e décolleté)
+3️⃣ Tessuti profondi: maggiore compattezza, definizione dell'ovale, distensione più visibile e naturale
+
+⚠ Posti limitati: solo 8 slot disponibili nella giornata, riservati a chi prenota in anticipo.
+
+Nessun costo, nessun impegno: solo l'opportunità di scoprire concretamente cosa può fare il Metodo Total Lift sulla tua pelle.
+
+Clicca qui sotto per scoprire i dettagli e bloccare subito la tua prova gratuita.
+
+📍 ${v.INDIRIZZO}`,
+  nomCampagna: (v) => `Open Day - Total Lift - ${v.NOME_DOTTORESSA}`
+};
+
+// Etichetta variante per TL Paid (per coerenza nel pill)
+TL.variantLabel = "A pagamento";
+
+const FRONTENDS = {
+  total_lift_paid: TL,
+  total_lift_free: TL_FREE,
+  total_sculpt: TS
+};
 
 function getActiveFrontendKey() {
-  const checked = document.querySelector('input[name="frontend"]:checked');
-  return checked ? checked.value : "total_lift";
+  const checkedFE = document.querySelector('input[name="frontend"]:checked');
+  const fe = checkedFE ? checkedFE.value : "total_lift";
+  if (fe === "total_lift") {
+    const checkedVar = document.querySelector('input[name="tl_variant"]:checked');
+    const variant = checkedVar ? checkedVar.value : "paid";
+    return `total_lift_${variant}`;
+  }
+  return fe;
 }
 function getActiveFrontend() {
   return FRONTENDS[getActiveFrontendKey()] || TL;
@@ -760,7 +924,7 @@ function updateCanvaSection(fe) {
   else link.classList.remove("disabled");
   const pill = document.getElementById("fe_pill_creatives");
   if (pill) {
-    pill.textContent = fe.label;
+    pill.textContent = fe.variantLabel ? `${fe.label} · ${fe.variantLabel}` : fe.label;
     pill.className = "fe-pill" + (fe.pillClass ? " " + fe.pillClass : "");
   }
 }
@@ -785,7 +949,7 @@ function render() {
   document.getElementById("d_fine").textContent = v.DATA_FINE_ADSET;
   document.getElementById("d_full").textContent = v.DATA_FULL;
 
-  const pill = `<div class="frontend-active-pill ${fe.pillClass}">Front-end attivo: ${fe.label}${fe.isPlaceholder ? " · 🚧 placeholder" : ""}</div>`;
+  const pill = `<div class="frontend-active-pill ${fe.pillClass}">Front-end attivo: ${fe.label}${fe.variantLabel ? " · " + fe.variantLabel : ""}${fe.isPlaceholder ? " · 🚧 placeholder" : ""}</div>`;
 
   const blocks = [
     { id: "copy1", title: "Copy 1 · MASTER", meta: "Versione approvata, completa", body: fe.copy1(v), red: false },
