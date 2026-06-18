@@ -869,8 +869,8 @@ function getValues() {
 const FORM_TITOLO = (v, fe) => `OPEN DAY ${fe.label} -${v.DATA_NUMERICA}| ${v.NOME_FARMACIA}`;
 const FORM_NOME = (v) => v.INDIRIZZO;
 const FORM_DOMANDE = (v) => `1) Sei consapevole che ${v.NOME_FARMACIA} si trovi in ${v.INDIRIZZO}?`;
-// Consenso marketing — Strada 1 (cessione a TITOLARE AUTONOMO). Per la Strada 2 (contitolarità) sostituire il testo con quello indicato.
-const FORM_CONSENSO = (v) => `Acconsento alla comunicazione dei miei dati a ${v.NOME_FARMACIA}, che li tratterà in qualità di titolare autonomo del trattamento per proprie finalità di marketing (informazioni, promozioni e offerte sui propri servizi), secondo la propria informativa privacy. Consenso facoltativo e revocabile in qualsiasi momento.`;
+// Consenso marketing — Strada 2 (CONTITOLARITÀ Med & Tech + struttura). Richiede accordo di contitolarità a monte.
+const FORM_CONSENSO = (v) => `Acconsento al trattamento dei miei dati per finalità di marketing da parte di Med & Tech e di ${v.NOME_FARMACIA}, contitolari del trattamento, per l’invio di informazioni, promozioni e offerte sui servizi offerti. Consenso facoltativo e revocabile in qualsiasi momento.`;
 const NOM_ADSET = (v) => `PUBBLICO FREDDO - ${v.COGNOME_DOTTORESSA} | Dal ${v.DATA_INIZIO_ADSET} al ${v.DATA_FINE_ADSET}`;
 const NOM_CREATIVITA = (v) => v.DATA_FULL;
 
