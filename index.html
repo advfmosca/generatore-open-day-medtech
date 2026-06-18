@@ -495,217 +495,101 @@ const TS = {
   canvaVideoLink: "https://canva.link/efztwf206ahumhm",
   canvaVideoLabel: "Canva · template condiviso (Total Sculpt)",
   isPlaceholder: false,
-  // ===== TOTAL SCULPT — nuova copy unica in rotazione (12/05/2026) =====
-  // copy1, copy2, copy3 ora puntano alla stessa narrativa: niente A/B testing su Sculpt.
-  // Placeholder dinamici: ${v.NOME_FARMACIA}, ${v.DATA_GG_MESE}.
-  copy1: (v) => `Questo corpo non mi piace più.
-Non è solo gonfiore.
-Non è solo cellulite.
-Non è solo "mi vedo meno tonica".
-È la tua silhouette che è cambiata: pelle meno compatta, tono che scende, muscolo meno definito, adiposità localizzate che restano sempre lì, anche quando provi a drenare, massaggiare o fare trattamenti corpo tradizionali.
+  // ===== TOTAL SCULPT — 3 copy in stile Total Lift (Master / Corta / CTR) =====
+  // Placeholder dinamici: ${v.NOME_FARMACIA}, ${v.DATA_GG_MESE}, ${v.NOME_DOTTORESSA_COPY}.
+  copy1: (v) => `Corpo meno tonico, silhouette meno definita, adiposità che restano sempre negli stessi punti: non aspettare che si fissino.
 
-Ed è proprio qui che nasce la differenza.
+Quando il corpo perde tono, compattezza e definizione, spesso non è "solo questione di peso": è un calo di qualità del tessuto e di tono muscolare che drenaggi e massaggi, da soli, non risolvono.
 
-Un normale trattamento estetico spesso lavora in modo generico: drena, stimola, massaggia, migliora momentaneamente la sensazione di leggerezza.
+E più si rimanda, più la zona tende a perdere forma.
 
-Total Sculpt, invece, lavora con una logica diversa.
+🧬 Qui entra in gioco la Medicina Rigenerativa in ambito estetico: un approccio clinico avanzato che lavora sulla qualità del tessuto, sul tono muscolare e sulle adiposità localizzate, per un rimodellamento immediato e non chirurgico.
 
-Non nasce come il classico trattamento corpo da cabina.
+In pratica: l'obiettivo è ridisegnare la silhouette dall'interno, intervenendo sulla causa del cambiamento e non solo sulla superficie.
 
-È un protocollo di MEDICINA RIGENERATIVA IN AMBITO ESTETICO, pensato per intervenire in modo più mirato sulla qualità del tessuto, sul tono muscolare e sulle adiposità localizzate.
+Open Day Total Sculpt – ${v.DATA_GG_MESE}
 
-➡️ Non si limita a "trattare la zona".
-Studia la zona. La valuta. Capisce cosa sta succedendo davvero. E costruisce un intervento più preciso, più focalizzato, più evoluto.
+📍 Presso ${v.NOME_FARMACIA}, con ${v.NOME_DOTTORESSA_COPY}.
 
-Perché se il corpo ha perso tono, compattezza e definizione, spesso non basta "drenare".
+In giornata potrai accedere a un'esperienza pensata per valutare concretamente l'efficacia del Metodo Total Sculpt:
 
-Serve lavorare su più livelli:
-✅ sul muscolo, per aiutare la zona a ritrovare tono e sostegno
-✅ sul tessuto, per migliorare compattezza e qualità della pelle
-✅ sulle adiposità localizzate, per favorire una silhouette più asciutta e definita
-✅ sull'armonia della forma, per un risultato più naturale e proporzionato
+✅ Valutazione clinica personalizzata GRATUITA
+✅ Mini Trattamento Sculpt – su zona localizzata a un prezzo SUPER PROMO
 
-Questo è il vero salto di livello.
+Un'opportunità esclusiva per intervenire su una zona critica mirata (es. addome, fianchi, interno coscia, braccia, glutei), definita in base alla valutazione clinica.
 
-Total Sculpt non è il solito trattamento estetico.
-È un approccio più strutturato, più sartoriale, più vicino a una logica clinica: prima si valuta, poi si interviene.
+✨ Il Metodo Total Sculpt lavora su 3 livelli (protocolli clinici + tecnologie, secondo indicazione clinica):
 
-Con MED&TECH non esistono percorsi standard.
+1️⃣ Muscolo: più tono e sostegno, zona più compatta e definita
+2️⃣ Tessuto: pelle più compatta e di qualità migliore, superficie più uniforme
+3️⃣ Adiposità localizzate: svuotamento mirato per una silhouette più asciutta e scolpita
 
-Si parte da una valutazione clinica personalizzata, per capire cosa sta succedendo nella tua zona critica: tono, accumulo localizzato, qualità del tessuto e obiettivo reale da raggiungere.
+⚠ Posti limitati: solo 8 slot.
 
-Presso ${v.NOME_FARMACIA}, in data ${v.DATA_GG_MESE}, si svolgerà l'Open Day Total Sculpt.
+Clicca qui sotto per scoprire l'offerta riservata a questa giornata e bloccare subito il tuo posto.
 
-Durante questa giornata non farai una semplice prova estetica.
+📍 ${v.INDIRIZZO}`,
+  copy2: (v) => `Silhouette meno definita, tono che scende, adiposità localizzate sempre negli stessi punti: spesso non è "solo questione di peso", è un calo di tono muscolare e qualità del tessuto.
 
-Farai un MINI TRATTAMENTO SCULPT LOCALIZZATO su una tua zona critica.
+🧬 La Medicina Rigenerativa in ambito estetico lavora dove serve — muscolo, tessuto e adiposità localizzate — per un rimodellamento immediato e non chirurgico, in modo mirato e armonico.
 
-Una sessione breve ma reale, super focalizzata, pensata per farti percepire concretamente la differenza tra un normale trattamento estetico e un protocollo di rimodellamento immediato applicato con criterio clinico.
+Open Day Total Sculpt – ${v.DATA_GG_MESE}
 
-Cosa comprende l'Open Day:
-✅ Valutazione clinica personalizzata
-✅ Studio della tua zona critica
-✅ Mini trattamento Sculpt localizzato
-✅ Analisi del tono, del tessuto e delle adiposità localizzate
-✅ Strategia su come costruire un programma ad hoc per il tuo corpo
-✅ Focus su rimodellamento immediato, compattezza e definizione
+📍 Presso ${v.NOME_FARMACIA}, con ${v.NOME_DOTTORESSA_COPY}:
 
-Per questa giornata abbiamo riservato un'offerta speciale, valida solo durante l'Open Day.
+✅ Valutazione clinica personalizzata GRATUITA
+✅ Mini Trattamento Sculpt su zona localizzata in SUPER PROMO
 
-Non è il classico "trattamentino prova".
+⚠ Solo 8 slot. Quando finiscono, finiscono.
 
-È un mini trattamento mirato, pensato per farti scoprire in modo concreto il potenziale di Total Sculpt sulla zona che oggi vuoi vedere più tonica, asciutta e scolpita.
+👇 Clicca qui sotto e blocca subito il tuo posto.
 
-✅ Posti disponibili: solo 8.
-Quando finiscono, si chiude.
+📍 ${v.INDIRIZZO}`,
+  copy3: (v) => `✋ STOP a sedute e pacchetti che non lasciano risultati reali.
 
-Clicca qui sotto e ti spieghiamo tutto.`,
-  copy2: (v) => `Questo corpo non mi piace più.
-Non è solo gonfiore.
-Non è solo cellulite.
-Non è solo "mi vedo meno tonica".
-È la tua silhouette che è cambiata: pelle meno compatta, tono che scende, muscolo meno definito, adiposità localizzate che restano sempre lì, anche quando provi a drenare, massaggiare o fare trattamenti corpo tradizionali.
+Se il corpo ha perso tono, la pelle è meno compatta e le adiposità restano sempre lì, il problema non è il tuo impegno: i trattamenti generici lavorano solo in superficie.
 
-Ed è proprio qui che nasce la differenza.
+E nessun massaggio, da solo, può ridisegnare la silhouette.
 
-Un normale trattamento estetico spesso lavora in modo generico: drena, stimola, massaggia, migliora momentaneamente la sensazione di leggerezza.
+🧬 Qui entra in gioco la Medicina Rigenerativa in ambito estetico: un approccio clinico che agisce sulla qualità del tessuto, sul tono muscolare e sulle adiposità localizzate — rimodellamento immediato, non chirurgico, applicato con criterio clinico.
 
-Total Sculpt, invece, lavora con una logica diversa.
-
-Non nasce come il classico trattamento corpo da cabina.
-
-È un protocollo di MEDICINA RIGENERATIVA IN AMBITO ESTETICO, pensato per intervenire in modo più mirato sulla qualità del tessuto, sul tono muscolare e sulle adiposità localizzate.
-
-➡️ Non si limita a "trattare la zona".
-Studia la zona. La valuta. Capisce cosa sta succedendo davvero. E costruisce un intervento più preciso, più focalizzato, più evoluto.
-
-Perché se il corpo ha perso tono, compattezza e definizione, spesso non basta "drenare".
-
-Serve lavorare su più livelli:
-✅ sul muscolo, per aiutare la zona a ritrovare tono e sostegno
-✅ sul tessuto, per migliorare compattezza e qualità della pelle
-✅ sulle adiposità localizzate, per favorire una silhouette più asciutta e definita
-✅ sull'armonia della forma, per un risultato più naturale e proporzionato
-
-Questo è il vero salto di livello.
-
-Total Sculpt non è il solito trattamento estetico.
-È un approccio più strutturato, più sartoriale, più vicino a una logica clinica: prima si valuta, poi si interviene.
-
-Con MED&TECH non esistono percorsi standard.
-
-Si parte da una valutazione clinica personalizzata, per capire cosa sta succedendo nella tua zona critica: tono, accumulo localizzato, qualità del tessuto e obiettivo reale da raggiungere.
-
-Presso ${v.NOME_FARMACIA}, in data ${v.DATA_GG_MESE}, si svolgerà l'Open Day Total Sculpt.
-
-Durante questa giornata non farai una semplice prova estetica.
-
-Farai un MINI TRATTAMENTO SCULPT LOCALIZZATO su una tua zona critica.
-
-Una sessione breve ma reale, super focalizzata, pensata per farti percepire concretamente la differenza tra un normale trattamento estetico e un protocollo di rimodellamento immediato applicato con criterio clinico.
-
-Cosa comprende l'Open Day:
-✅ Valutazione clinica personalizzata
-✅ Studio della tua zona critica
-✅ Mini trattamento Sculpt localizzato
-✅ Analisi del tono, del tessuto e delle adiposità localizzate
-✅ Strategia su come costruire un programma ad hoc per il tuo corpo
-✅ Focus su rimodellamento immediato, compattezza e definizione
-
-Per questa giornata abbiamo riservato un'offerta speciale, valida solo durante l'Open Day.
-
-Non è il classico "trattamentino prova".
-
-È un mini trattamento mirato, pensato per farti scoprire in modo concreto il potenziale di Total Sculpt sulla zona che oggi vuoi vedere più tonica, asciutta e scolpita.
-
-✅ Posti disponibili: solo 8.
-Quando finiscono, si chiude.
-
-Clicca qui sotto e ti spieghiamo tutto.`,
-  copy3: (v) => `Questo corpo non mi piace più.
-Non è solo gonfiore.
-Non è solo cellulite.
-Non è solo "mi vedo meno tonica".
-È la tua silhouette che è cambiata: pelle meno compatta, tono che scende, muscolo meno definito, adiposità localizzate che restano sempre lì, anche quando provi a drenare, massaggiare o fare trattamenti corpo tradizionali.
-
-Ed è proprio qui che nasce la differenza.
-
-Un normale trattamento estetico spesso lavora in modo generico: drena, stimola, massaggia, migliora momentaneamente la sensazione di leggerezza.
-
-Total Sculpt, invece, lavora con una logica diversa.
-
-Non nasce come il classico trattamento corpo da cabina.
-
-È un protocollo di MEDICINA RIGENERATIVA IN AMBITO ESTETICO, pensato per intervenire in modo più mirato sulla qualità del tessuto, sul tono muscolare e sulle adiposità localizzate.
-
-➡️ Non si limita a "trattare la zona".
-Studia la zona. La valuta. Capisce cosa sta succedendo davvero. E costruisce un intervento più preciso, più focalizzato, più evoluto.
-
-Perché se il corpo ha perso tono, compattezza e definizione, spesso non basta "drenare".
-
-Serve lavorare su più livelli:
-✅ sul muscolo, per aiutare la zona a ritrovare tono e sostegno
-✅ sul tessuto, per migliorare compattezza e qualità della pelle
-✅ sulle adiposità localizzate, per favorire una silhouette più asciutta e definita
-✅ sull'armonia della forma, per un risultato più naturale e proporzionato
-
-Questo è il vero salto di livello.
-
-Total Sculpt non è il solito trattamento estetico.
-È un approccio più strutturato, più sartoriale, più vicino a una logica clinica: prima si valuta, poi si interviene.
-
-Con MED&TECH non esistono percorsi standard.
-
-Si parte da una valutazione clinica personalizzata, per capire cosa sta succedendo nella tua zona critica: tono, accumulo localizzato, qualità del tessuto e obiettivo reale da raggiungere.
-
-Presso ${v.NOME_FARMACIA}, in data ${v.DATA_GG_MESE}, si svolgerà l'Open Day Total Sculpt.
-
-Durante questa giornata non farai una semplice prova estetica.
-
-Farai un MINI TRATTAMENTO SCULPT LOCALIZZATO su una tua zona critica.
-
-Una sessione breve ma reale, super focalizzata, pensata per farti percepire concretamente la differenza tra un normale trattamento estetico e un protocollo di rimodellamento immediato applicato con criterio clinico.
-
-Cosa comprende l'Open Day:
-✅ Valutazione clinica personalizzata
-✅ Studio della tua zona critica
-✅ Mini trattamento Sculpt localizzato
-✅ Analisi del tono, del tessuto e delle adiposità localizzate
-✅ Strategia su come costruire un programma ad hoc per il tuo corpo
-✅ Focus su rimodellamento immediato, compattezza e definizione
-
-Per questa giornata abbiamo riservato un'offerta speciale, valida solo durante l'Open Day.
-
-Non è il classico "trattamentino prova".
-
-È un mini trattamento mirato, pensato per farti scoprire in modo concreto il potenziale di Total Sculpt sulla zona che oggi vuoi vedere più tonica, asciutta e scolpita.
-
-✅ Posti disponibili: solo 8.
-Quando finiscono, si chiude.
-
-Clicca qui sotto e ti spieghiamo tutto.`,
-  formParagrafo: (v) => `Open Day Total Sculpt – ${v.DATA_GG_MESE}
-
-📍 Presso ${v.NOME_FARMACIA}.
-
-Total Sculpt è un protocollo di MEDICINA RIGENERATIVA IN AMBITO ESTETICO, pensato per intervenire sulla zona critica con una logica clinica: dal muscolo (tono e compattezza) al tessuto (qualità della pelle), fino alle adiposità localizzate.
-
-L'obiettivo non è solo "drenare": è restituire alla silhouette tono, compattezza e definizione.
+✨ ${v.DATA_GG_MESE} → OPEN DAY TOTAL SCULPT presso ${v.NOME_FARMACIA}, con ${v.NOME_DOTTORESSA_COPY}.
 
 Cosa ti aspetta in giornata:
 
-✅ Valutazione clinica personalizzata
-✅ Studio della tua zona critica
-✅ Mini Trattamento Sculpt localizzato
-✅ Analisi del tono, del tessuto e delle adiposità localizzate
-✅ Strategia per costruire un programma ad hoc per il tuo corpo
-✅ Focus su rimodellamento immediato, compattezza e definizione
+✅ Valutazione clinica personalizzata — GRATUITA
+✅ Mini Trattamento Sculpt su zona localizzata — SUPER PROMO
+✅ Protocollo su 3 livelli (muscolo + tessuto + adiposità localizzate) per una silhouette asciutta, definita e naturale
 
-Per questa giornata abbiamo riservato un'offerta speciale, valida solo durante l'Open Day.
+Le zone su cui lavoriamo (in base alla valutazione): addome, fianchi, interno coscia, braccia, glutei.
 
-⚠ Posti disponibili: solo 8. Quando finiscono, si chiude.
+⚠ Solo 8 slot: quando finiscono, finiscono.
 
-Clicca qui sotto e ti spieghiamo tutto.`,
+👇 Clicca qui sotto, scopri l'offerta riservata a questa giornata e prenota ORA il tuo posto.
+
+📍 ${v.INDIRIZZO}`,
+  formParagrafo: (v) => `Open Day Total Sculpt – ${v.DATA_GG_MESE}
+
+📍 Presso ${v.NOME_FARMACIA}, con ${v.NOME_DOTTORESSA_COPY}.
+
+In giornata potrai accedere a un'esperienza pensata per valutare concretamente l'efficacia del Metodo Total Sculpt:
+
+✅ Valutazione clinica personalizzata GRATUITA
+✅ Mini Trattamento Sculpt – su zona localizzata a un prezzo SUPER PROMO
+
+Un'opportunità esclusiva per intervenire su una zona critica mirata (es. addome, fianchi, interno coscia, braccia, glutei), definita in base alla valutazione clinica.
+
+✨ Il Metodo Total Sculpt lavora su 3 livelli (protocolli clinici + tecnologie, secondo indicazione clinica):
+
+1️⃣ Muscolo: più tono e sostegno, zona più compatta e definita
+2️⃣ Tessuto: pelle più compatta e di qualità migliore, superficie più uniforme
+3️⃣ Adiposità localizzate: svuotamento mirato per una silhouette più asciutta e scolpita
+
+⚠ Posti limitati: solo 8 slot.
+
+Clicca qui sotto per scoprire l'offerta riservata a questa giornata e bloccare subito il tuo posto.
+
+📍 ${v.INDIRIZZO}`,
   nomCampagna: (v) => `Open Day - Total Sculpt - ${v.NOME_DOTTORESSA}`
 };
 
