@@ -869,6 +869,8 @@ function getValues() {
 const FORM_TITOLO = (v, fe) => `OPEN DAY ${fe.label} -${v.DATA_NUMERICA}| ${v.NOME_FARMACIA}`;
 const FORM_NOME = (v) => v.INDIRIZZO;
 const FORM_DOMANDE = (v) => `1) Sei consapevole che ${v.NOME_FARMACIA} si trovi in ${v.INDIRIZZO}?`;
+// Consenso marketing — Strada 1 (cessione a TITOLARE AUTONOMO). Per la Strada 2 (contitolarità) sostituire il testo con quello indicato.
+const FORM_CONSENSO = (v) => `Acconsento alla comunicazione dei miei dati a ${v.NOME_FARMACIA}, che li tratterà in qualità di titolare autonomo del trattamento per proprie finalità di marketing (informazioni, promozioni e offerte sui propri servizi), secondo la propria informativa privacy. Consenso facoltativo e revocabile in qualsiasi momento.`;
 const NOM_ADSET = (v) => `PUBBLICO FREDDO - ${v.COGNOME_DOTTORESSA} | Dal ${v.DATA_INIZIO_ADSET} al ${v.DATA_FINE_ADSET}`;
 const NOM_CREATIVITA = (v) => v.DATA_FULL;
 
@@ -959,6 +961,7 @@ function render() {
     { id: "form_titolo", title: "Form Meta Lead · TITOLO", meta: "Headline mostrata al lead — front-end + nome struttura", body: FORM_TITOLO(v, fe), red: false },
     { id: "form_par", title: "Form Meta Lead · PARAGRAFO", meta: "Descrizione dell'offerta sotto il titolo del form", body: fe.formParagrafo(v), red: false },
     { id: "form_domande", title: "Form Meta Lead · DOMANDE", meta: "Domande personalizzate del form lead", body: FORM_DOMANDE(v), red: false },
+    { id: "form_consenso", title: "Form Meta Lead · CONSENSO MARKETING", meta: "Casella da incollare in Informativa privacy → Consenso personalizzato. Impostala come FACOLTATIVA (non obbligatoria).", body: FORM_CONSENSO(v), red: false },
     { id: "nom_camp", title: "Nomenclatura BM · CAMPAGNA", meta: "Nome livello Campagna", body: fe.nomCampagna(v), red: false },
     { id: "nom_adset", title: "Nomenclatura BM · AD SET", meta: "Nome livello Ad Set", body: NOM_ADSET(v), red: false },
     { id: "nom_crea", title: "Nomenclatura BM · CREATIVITÀ", meta: "Nome dell'inserzione/creatività", body: NOM_CREATIVITA(v), red: false },
